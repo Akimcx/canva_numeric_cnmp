@@ -1,0 +1,14 @@
+tr {
+  border-bottom: 1px solid #ddd;
+}
+tr:hover {
+  background-color: #d6eeee;
+}
+
+input:invalid {
+  border-color: red;
+}
+
+input:invalid:focus {
+  outline-color: red;
+}
