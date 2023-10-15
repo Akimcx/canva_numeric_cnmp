@@ -27,6 +27,15 @@ const nature = Object.freeze({
  * @property {Procedure[]} level4
  */
 
+/**
+ * @typedef {Object} Marche
+ * @property {number} no
+ * @property {number} price
+ * @property {string} obj
+ * @property {string} src
+ * @property {nature} nat
+ */
+
 /** @type {Seuil} */
 const seuil = {
   level1: [
@@ -101,15 +110,19 @@ export default class PAPMP {
     this.institution = institution;
     this.sigle = sigle;
     this.level = level;
+    /** @type {Marche} */
     this.marche = new Object();
     this.count = 1;
   }
 
-  addMarche(obj, src, nat) {
+  addMarche(obj, src, nat, price) {
     this.marche.no = this.count++;
     this.marche.obj = obj;
+    this.marche.price = price;
     this.marche.src = src;
     this.setNature(nat);
+
+    this.setProcedure(this.level, this.marche.nat, this.marche.price);
     console.log(this.marche);
   }
 
@@ -119,16 +132,16 @@ export default class PAPMP {
   setNature(nat) {
     switch (nat) {
       case "F":
-        this.marche.nature = nature.Fournitures;
+        this.marche.nat = nature.Fournitures;
         break;
       case "P":
-        this.marche.nature = nature.Prestations;
+        this.marche.nat = nature.Prestations;
         break;
       case "T":
-        this.marche.nature = nature.Travaux;
+        this.marche.nat = nature.Travaux;
         break;
       case "S":
-        this.marche.nature = nature.Services;
+        this.marche.nat = nature.Services;
         break;
       default:
         break;
@@ -137,10 +150,10 @@ export default class PAPMP {
 
   /**
    * @param {string} level
-   * @param {nature} nature
+   * @param {nature} nat
    * @param {number} amount
    */
-  getProcedure(level, nature, amount) {
+  setProcedure(level, nat, amount) {
     console.log();
   }
 }
