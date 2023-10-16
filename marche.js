@@ -8,7 +8,7 @@ const nature = Object.freeze({
 /**
  * @typedef {Object} MarcheInfo
  * @property {number} min
- * @property {number?} max
+ * @property {number} max
  * @property {string|string[]} procurement
  * @property {nature} nature
  */
@@ -34,6 +34,7 @@ const nature = Object.freeze({
  * @property {string} obj
  * @property {string} src
  * @property {nature} nat
+ * @property {MarcheInfo} procedure
  */
 
 /** @type {Seuil} */
@@ -84,16 +85,19 @@ const seuil = {
       marchesInfo: [
         {
           min: 14,
+          max: Infinity,
           procurement: "aoon|aooi",
           nature: nature.Prestations,
         },
         {
           min: 16,
+          max: Infinity,
           procurement: "aoon|aooi",
           nature: nature.Fournitures,
         },
         {
           min: 35,
+          max: Infinity,
           procurement: "aoon|aooi",
           nature: nature.Travaux,
         },
@@ -110,39 +114,36 @@ export default class PAPMP {
     this.institution = institution;
     this.sigle = sigle;
     this.level = level;
-    /** @type {Marche} */
-    this.marche = new Object();
+    /** @type {Marche[]} */
+    this.marches = [];
     this.count = 1;
   }
-
+  
   addMarche(obj, src, nat, price) {
-    this.marche.no = this.count++;
-    this.marche.obj = obj;
-    this.marche.price = price;
-    this.marche.src = src;
-    this.setNature(nat);
-
-    this.setProcedure(this.level, this.marche.nat, this.marche.price);
-    console.log(this.marche);
+    /** @type {Marche} */
+    const marche = new Object()
+    marche.no = this.count++;
+    marche.obj = obj;
+    marche.price = price;
+    marche.src = src;
+    marche.nat = this.getNature(nat);
+    marche.procedure = this.getProcedure(this.level, marche.nat, marche.price);
+    this.marches.push(marche)
   }
 
   /**
    * @param {string} nat
    */
-  setNature(nat) {
+  getNature(nat) {
     switch (nat) {
       case "F":
-        this.marche.nat = nature.Fournitures;
-        break;
+        return nature.Fournitures;
       case "P":
-        this.marche.nat = nature.Prestations;
-        break;
+        return nature.Prestations;
       case "T":
-        this.marche.nat = nature.Travaux;
-        break;
+        return nature.Travaux;
       case "S":
-        this.marche.nat = nature.Services;
-        break;
+        return nature.Services;
       default:
         break;
     }
@@ -153,7 +154,23 @@ export default class PAPMP {
    * @param {nature} nat
    * @param {number} amount
    */
-  setProcedure(level, nat, amount) {
-    console.log();
+  getProcedure(level, nat, amount) {
+    let res;
+    /** @type {Procedure[]} */
+    const procedures = seuil[level]
+    procedures.forEach(procedure => {
+      const marchesInfo = procedure.marchesInfo;
+      const marcheInfo = marchesInfo.filter(
+        marcheInfo => 
+        (amount >= marcheInfo.min &&  amount < marcheInfo.max)
+         && marcheInfo.nature === nat
+         )
+
+      if(marcheInfo.length === 1) {
+        res = marcheInfo[0]
+        return
+      }
+    })
+    if(res) return res
   }
 }
