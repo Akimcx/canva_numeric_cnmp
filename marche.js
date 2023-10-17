@@ -18,6 +18,7 @@ const nature = Object.freeze({
  * @property {string} name
  * @property {MarcheInfo[]} marchesInfo
  * @property {boolean} control
+ * @property {number} launch_sign_time_diff
  */
 
 /**
@@ -35,7 +36,7 @@ const nature = Object.freeze({
  * @property {string} obj
  * @property {string} src
  * @property {nature} nat
- * @property {MarcheInfo} procedure
+ * @property {Procedure} procedure
  */
 
 /** @type {Seuil} */
@@ -44,6 +45,7 @@ const seuil = {
     {
       name: "Procedures de Demandes",
       control: false,
+      launch_sign_time_diff: 2,
       marchesInfo: [
         {
           min: 3.5,
@@ -62,6 +64,7 @@ const seuil = {
     {
       name: "Procedures de allegees",
       control: false,
+      launch_sign_time_diff: 2,
       marchesInfo: [
         {
           min: 3.5,
@@ -86,6 +89,7 @@ const seuil = {
     {
       name: "Procedures de generales",
       control: true,
+      launch_sign_time_diff: 3,
       marchesInfo: [
         {
           min: 14,
@@ -121,6 +125,21 @@ export default class PAPMP {
     /** @type {Marche[]} */
     this.marches = [];
     this.count = 1;
+    /** @type {string[]} */
+    this.months = [
+      'Octobre',
+      'Novembre',
+      'Décembre',
+      'Janvier',
+      'Février',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Août',
+      'Septembre'
+    ];
   }
 
   addMarche(obj, src, nat, price) {

@@ -35,19 +35,75 @@ addBtn.addEventListener("click", (e) => {
   const nature = document.getElementById("nature");
 
   validate.addEventListener("click", (e) => {
+    e.preventDefault()
     papmp.addMarche(obj.value, "TF", nature.value, budget.value);
   });
 
   next.addEventListener("click", (e) => {
+    e.preventDefault()
     console.log(papmp.marches);
 
     screen2.removeAttribute("hidden");
     prev.removeAttribute("disabled");
     screen1.setAttribute("hidden", true);
     next.setAttribute("disabled", true);
+
+    /** @type {HTMLSelectElement} */
+    const passation = document.getElementById("passation")
+    const procurement = papmp.marches[0].procedure.marchesInfo[0].procurement
+    if(Array.isArray(procurement)) {
+      procurement.forEach(p=> {
+        const opt = document.createElement("option")
+        opt.value = p
+        opt.textContent = p
+        passation.options.add(opt)
+      })
+    } else {
+      const opt = document.createElement("option")
+      opt.value = procurement
+      opt.textContent = procurement
+
+      passation.options.add(opt)
+      passation.selectedIndex = 0
+      passation.setAttribute("disabled", true)
+    }
+
+    /** @type {HTMLSelectElement} */
+    const launch = document.getElementById("launch")
+    /** @type {HTMLSelectElement} */
+    const sign = document.getElementById("sign")
+    
+    launch.addEventListener("input",e=> {
+      sign.innerHTML = ""
+      const index = papmp.months.indexOf(launch.value) + 1;
+      const months = papmp.months.slice(index,papmp.marches[0].procedure.launch_sign_time_diff+index)
+      months.forEach(month=>{
+        const opt = document.createElement("option")
+        opt.value = month
+        opt.textContent = month
+        sign.options.add(opt)
+      })
+    })
+    papmp.months.forEach(month=>{
+      const opt = document.createElement("option")
+      opt.value = month
+      opt.textContent = month
+      launch.options.add(opt)
+    })
+    sign.removeAttribute("disabled")
+    launch.dispatchEvent(new Event("input"))
+
+
+
+    /** @type {HTMLSelectElement} */
+    const control = document.getElementById("control")
+    control.selectedIndex = papmp.marches[0].procedure.control ? 0 : 1;
+    control.setAttribute("disabled", true)
   });
 
   prev.addEventListener("click", (e) => {
+    e.preventDefault()
+
     screen1.removeAttribute("hidden");
     next.removeAttribute("disabled");
     screen2.setAttribute("hidden", true);
