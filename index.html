@@ -64,11 +64,10 @@
               <legend for="code">Code budgetaire</legend>
               <input type="text" name="code" class="code" id="code" />
             </fieldset>
-
             <fieldset class="form-control">
               <legend for="passation">Mode de passation</legend>
               <select class="passation" id="passation">
-                <option value="">Choisir</option>
+                <!-- <option value="">Choisir</option>
                 <option value="AOON">AOON</option>
                 <option value="AORN">AORN</option>
                 <option value="AOPQ">AOPQ</option>
@@ -83,21 +82,20 @@
                 <option value="DECO">DECO</option>
                 <option value="PRAL">PRAL</option>
                 <option value="ANPQ">ANPQ</option>
-                <option value="AIPQ">AIPQ</option>
+                <option value="AIPQ">AIPQ</option> -->
               </select>
             </fieldset>
             <fieldset class="form-control">
               <legend for="launch">Periode de lancement</legend>
-              <input type="month" name="launch" class="launch" id="launch" />
+              <select name="launch" class="launch" id="launch"></select>
             </fieldset>
             <fieldset class="form-control">
               <legend for="sign">Periode probable de signature</legend>
-              <input type="month" name="sign" class="sign" id="sign" />
+              <select disabled name="sign" class="sign" id="sign"></select>
             </fieldset>
             <fieldset class="form-control">
               <legend for="control">Controle a priori de la CNMP</legend>
               <select name="control" class="control" id="control">
-                <option value="">Choisir</option>
                 <option value="Oui">Oui</option>
                 <option value="Non">Non</option>
               </select>
