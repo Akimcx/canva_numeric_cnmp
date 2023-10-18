@@ -12,3 +12,21 @@ input:invalid {
 input:invalid:focus {
   outline-color: red;
 }
+
+fieldset {
+  padding: 0;
+}
+
+fieldset input,
+fieldset select,
+fieldset textarea {
+  width: 100%;
+  border: none;
+  padding: 0;
+}
+
+.btns {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-around;
+}
