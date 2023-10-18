@@ -15,106 +15,121 @@
     </header>
     <main>
       <dialog>
+        <h1>Marche no <span class="no">1</span></h1>
         <form method="dialog">
-          <h1>#<span class="no">1</span></h1>
-          <div class="form-control">
-            <label for="objet">Objet du projet de marche</label>
-            <textarea
-              type="text"
-              name="objet"
-              class="objet"
-              id="objet"
-              required
-            ></textarea>
+          <div id="screen1" class="screen1">
+            <fieldset class="form-control">
+              <legend>Objet du projet de marche</legend>
+              <textarea
+                type="text"
+                name="objet"
+                class="objet"
+                id="objet"
+                required
+              ></textarea>
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="budget">Montant des credits disponibles</legend>
+              <input
+                type="number"
+                name="budget"
+                class="budget"
+                id="budget"
+                min="1"
+              />
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="nature">Nature du marche</legend>
+              <select class="nature" id="nature" required>
+                <option value="">Choisir</option>
+                <option value="S">S</option>
+                <option value="F">F</option>
+                <option value="T">T</option>
+                <option value="PI">P</option>
+              </select>
+            </fieldset>
           </div>
-          <div class="form-control">
-            <label for="finance">Source de financement</label>
-            <select class="finance " id="finance" required>
-              <option value="">Choisir</option>
-              <option value="TPI">TI</option>
-              <option value="TPF">TF</option>
-              <option value="FP">FP</option>
-              <option value="FE">FE</option>
-            </select>
+          <div id="screen2" class="screen2" hidden>
+            <fieldset class="form-control">
+              <legend for="finance">Source de financement</legend>
+              <select class="finance" id="finance" required>
+                <option value="">Choisir</option>
+                <option value="TPI">TI</option>
+                <option value="TPF">TF</option>
+                <option value="FP">FP</option>
+                <option value="FE">FE</option>
+              </select>
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="code">Code budgetaire</legend>
+              <input type="text" name="code" class="code" id="code" />
+            </fieldset>
+
+            <fieldset class="form-control">
+              <legend for="passation">Mode de passation</legend>
+              <select class="passation" id="passation">
+                <option value="">Choisir</option>
+                <option value="AOON">AOON</option>
+                <option value="AORN">AORN</option>
+                <option value="AOPQ">AOPQ</option>
+                <option value="GRGR">GRGR</option>
+                <option value="AODE">AODE</option>
+                <option value="AOOI">AOOI</option>
+                <option value="AORI">AORI</option>
+                <option value="DPAN">DPAN</option>
+                <option value="DPAI">DPAI</option>
+                <option value="DPNA">DPNA</option>
+                <option value="DEPX">DEPX</option>
+                <option value="DECO">DECO</option>
+                <option value="PRAL">PRAL</option>
+                <option value="ANPQ">ANPQ</option>
+                <option value="AIPQ">AIPQ</option>
+              </select>
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="launch">Periode de lancement</legend>
+              <input type="month" name="launch" class="launch" id="launch" />
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="sign">Periode probable de signature</legend>
+              <input type="month" name="sign" class="sign" id="sign" />
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="control">Controle a priori de la CNMP</legend>
+              <select name="control" class="control" id="control">
+                <option value="">Choisir</option>
+                <option value="Oui">Oui</option>
+                <option value="Non">Non</option>
+              </select>
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="localisation">Localisation</legend>
+              <input
+                type="text"
+                name="localisation"
+                class="localisation"
+                id="localisation"
+              />
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="delay">Delai previsionnel d'execution (mois)</legend>
+              <input
+                type="number"
+                name="delay"
+                class="delay"
+                id="delay"
+                min="1"
+              />
+            </fieldset>
+            <fieldset class="form-control">
+              <legend for="program">Programmation des depenses</legend>
+            </fieldset>
           </div>
-          <div class="form-control">
-            <label for="code">Code budgetaire</label>
-            <input type="text" name="code" class="code " id="code" />
+          <div class="btns">
+            <button id="prev" class="prev">Previous</button>
+            <button id="next" class="next">Next</button>
           </div>
-          <div class="form-control">
-            <label for="budget">Montant des credits disponibles</label>
-            <input
-              type="number"
-              name="budget"
-              class="budget"
-              id="budget"
-              min="1"
-            />
-          </div>
-          <div class="form-control">
-            <label for="nature">Nature du marche</label>
-            <select class="nature " id="nature" required>
-              <option value="">Choisir</option>
-              <option value="S">S</option>
-              <option value="F">F</option>
-              <option value="T">T</option>
-              <option value="PI">P</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="passation">Mode de passation</label>
-            <select class="passation " id="passation">
-              <option value="">Choisir</option>
-              <option value="AOON">AOON</option>
-              <option value="AORN">AORN</option>
-              <option value="AOPQ">AOPQ</option>
-              <option value="GRGR">GRGR</option>
-              <option value="AODE">AODE</option>
-              <option value="AOOI">AOOI</option>
-              <option value="AORI">AORI</option>
-              <option value="DPAN">DPAN</option>
-              <option value="DPAI">DPAI</option>
-              <option value="DPNA">DPNA</option>
-              <option value="DEPX">DEPX</option>
-              <option value="DECO">DECO</option>
-              <option value="PRAL">PRAL</option>
-              <option value="ANPQ">ANPQ</option>
-              <option value="AIPQ">AIPQ</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="launch">Periode de lancement</label>
-            <input type="month" name="launch" class="launch " id="launch" />
-          </div>
-          <div class="form-control">
-            <label for="sign">Periode probable de signature</label>
-            <input type="month" name="sign" class="sign" id="sign" />
-          </div>
-          <div class="form-control">
-            <label for="control">Controle a priori de la CNMP</label>
-            <select name="control" class="control" id="control">
-              <option value="">Choisir</option>
-              <option value="Oui">Oui</option>
-              <option value="Non">Non</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="localisation">Localisation</label>
-            <input
-              type="text"
-              name="localisation"
-              class="localisation"
-              id="localisation"
-            />
-          </div>
-          <div class="form-control">
-            <label for="delay">Delai previsionnel d'execution (mois)</label>
-            <input type="number" name="delay" class="delay" id="delay" min="1"
-            />
-          </div>
-          <div class="form-control">
-            <label for="program">Programmation des depenses</label>
-          </div>
+          <button id="validate" class="validate">Validate</button>
         </form>
       </dialog>
       <div>

@@ -17,6 +17,7 @@ const nature = Object.freeze({
  * @typedef {Object} Procedure
  * @property {string} name
  * @property {MarcheInfo[]} marchesInfo
+ * @property {boolean} control
  */
 
 /**
@@ -42,6 +43,7 @@ const seuil = {
   level1: [
     {
       name: "Procedures de Demandes",
+      control: false,
       marchesInfo: [
         {
           min: 3.5,
@@ -59,6 +61,7 @@ const seuil = {
     },
     {
       name: "Procedures de allegees",
+      control: false,
       marchesInfo: [
         {
           min: 3.5,
@@ -82,6 +85,7 @@ const seuil = {
     },
     {
       name: "Procedures de generales",
+      control: true,
       marchesInfo: [
         {
           min: 14,
@@ -118,17 +122,17 @@ export default class PAPMP {
     this.marches = [];
     this.count = 1;
   }
-  
+
   addMarche(obj, src, nat, price) {
     /** @type {Marche} */
-    const marche = new Object()
+    const marche = new Object();
     marche.no = this.count++;
     marche.obj = obj;
     marche.price = price;
     marche.src = src;
     marche.nat = this.getNature(nat);
     marche.procedure = this.getProcedure(this.level, marche.nat, marche.price);
-    this.marches.push(marche)
+    this.marches.push(marche);
   }
 
   /**
@@ -157,20 +161,22 @@ export default class PAPMP {
   getProcedure(level, nat, amount) {
     let res;
     /** @type {Procedure[]} */
-    const procedures = seuil[level]
-    procedures.forEach(procedure => {
+    const procedures = seuil[level];
+    procedures.forEach((procedure) => {
       const marchesInfo = procedure.marchesInfo;
       const marcheInfo = marchesInfo.filter(
-        marcheInfo => 
-        (amount >= marcheInfo.min &&  amount < marcheInfo.max)
-         && marcheInfo.nature === nat
-         )
+        (marcheInfo) =>
+          amount >= marcheInfo.min &&
+          amount < marcheInfo.max &&
+          marcheInfo.nature === nat
+      );
 
-      if(marcheInfo.length === 1) {
-        res = marcheInfo[0]
-        return
+      if (marcheInfo.length === 1) {
+        res = Object.assign({}, procedure);
+        res.marchesInfo = res.marchesInfo.filter((r) => r === marcheInfo[0]);
+        return;
       }
-    })
-    if(res) return res
+    });
+    if (res) return res;
   }
 }
