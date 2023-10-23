@@ -13,9 +13,6 @@ const addBtn = document.getElementById("add");
 /** @type {HTMLDialogElement} */
 const dialog = document.querySelector("dialog");
 addBtn.addEventListener("click", (e) => {
-  console.log(institution.value);
-  console.log(sigle.value);
-  console.log(identity.value);
   if (!institution.value || !sigle.value || !identity.value) {
     alert("Informations manquantes");
     return;
