@@ -5,6 +5,10 @@ const nature = Object.freeze({
   Prestations: "P",
 });
 
+const procurement = Object.freeze({
+  
+})
+
 /**
  * @typedef {Object} MarcheInfo
  * @property {number} min
@@ -50,7 +54,7 @@ const seuil = {
         {
           min: 3.5,
           max: 10,
-          procurement: "demande prix",
+          procurement: "DEPX",
           nature: nature.Fournitures,
         },
         {
