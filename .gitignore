@@ -1,0 +1,2 @@
+rust/cdc/target/*
+/rust/cdc/Cargo.lock
