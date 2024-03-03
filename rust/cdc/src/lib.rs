@@ -1,5 +1,7 @@
 use std::fmt::{self};
 
+use wasm_bindgen::prelude::wasm_bindgen;
+
 #[derive(Debug,Clone)]
 enum Month {
     Oct,
@@ -35,6 +37,7 @@ impl fmt::Display for Month {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug,Clone, Copy)]
 pub enum Mode {
     DEPX,
@@ -73,6 +76,7 @@ impl fmt::Display for Mode {
 }
 
 #[derive(Debug)]
+#[wasm_bindgen]
 pub enum Identity {
     State,
     Dept,
@@ -80,6 +84,7 @@ pub enum Identity {
     Ohter,
 }
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct AC {
     name: String,
@@ -95,7 +100,9 @@ impl fmt::Display for AC {
     }
 }
 
+#[wasm_bindgen]
 impl AC {
+    #[wasm_bindgen(constructor)]
     pub fn new(name: String, sigle: String, identity: Identity) -> Self {
         Self {
             name,
@@ -128,6 +135,7 @@ impl AC {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct Seuil {
     level1: Vec<Procedure>,
@@ -137,7 +145,9 @@ pub struct Seuil {
 }
 
 
+#[wasm_bindgen]
 impl Seuil {
+#[wasm_bindgen(constructor)]
     pub fn new(
         level1: Vec<Procedure>,
         level2: Vec<Procedure>,
@@ -168,6 +178,7 @@ impl Seuil {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug,Clone,Default)]
 pub struct Procedure {
     kind: Vec<ProcedureKind> ,//EnumProcedureKind,
@@ -176,7 +187,9 @@ pub struct Procedure {
     launch_sign_diff: u8,
 }
 
+#[wasm_bindgen]
 impl Procedure {
+    #[wasm_bindgen(constructor)]
     pub fn new(
         kind: Vec<ProcedureKind>,// EnumProcedureKind,
         contract_info: Vec<ContractInfo>,
@@ -208,6 +221,7 @@ impl Procedure {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug,Clone)]
 pub struct ContractInfo {
     min: f64,
@@ -216,7 +230,9 @@ pub struct ContractInfo {
     mode: Vec<Mode>
 }
 
+#[wasm_bindgen]
 impl ContractInfo {
+    #[wasm_bindgen(constructor)]
     pub fn new(min: f64, max: f64, contract_type: Vec<ContractType>, mode: Vec<Mode>) -> Self {
         Self {
             min,
@@ -243,6 +259,7 @@ impl ContractInfo {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug, PartialEq,Clone,Copy,Default)]
 pub enum ContractType {
     #[default]
@@ -263,6 +280,7 @@ impl fmt::Display for ContractType {
     }
 }
 
+#[wasm_bindgen(constructor)]
 #[derive(Debug,Clone)]
 pub enum ProcedureKind {
     Demandes,
@@ -290,6 +308,7 @@ impl PAPMP {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug,Clone)]
 pub struct Contract {
     no: String,
@@ -322,7 +341,9 @@ impl fmt::Display for Contract {
     }
 }
 
+#[wasm_bindgen]
 impl Contract {
+    #[wasm_bindgen(constructor)]
     pub fn new(
         description: String,
         amount: f64,
@@ -387,6 +408,7 @@ impl Contract {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug,Clone)]
 pub enum MoneyProvider {
     TI,
