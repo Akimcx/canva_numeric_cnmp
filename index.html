@@ -1,227 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <!-- <script src="marche.js" defer></script> -->
-    <script src="index.js" type="module" defer></script>
-    <title>CNMP - PAPMP</title>
-  </head>
-  <body>
-    <header>
-      <h1>Modele de canva numeric pour le PAPMP</h1>
-    </header>
-    <main>
-      <dialog>
-        <h1>Marche no <span class="no">1</span></h1>
-        <form method="dialog">
-          <div id="screen1" class="screen1">
-            <fieldset class="form-control">
-              <legend>Objet du projet de marche</legend>
-              <textarea
-                type="text"
-                name="objet"
-                class="objet"
-                id="objet"
-                required
-              ></textarea>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="budget">Montant des credits disponibles</legend>
-              <input
-                type="number"
-                name="budget"
-                class="budget"
-                id="budget"
-                min="1"
-              />
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="nature">Nature du marche</legend>
-              <select class="nature" id="nature" required>
-                <option value="">Choisir</option>
-                <option value="S">S</option>
-                <option value="F">F</option>
-                <option value="T">T</option>
-                <option value="PI">P</option>
-              </select>
-            </fieldset>
-          </div>
-          <div id="screen2" class="screen2" hidden>
-            <fieldset class="form-control">
-              <legend for="finance">Source de financement</legend>
-              <select class="finance" id="finance" required>
-                <option value="">Choisir</option>
-                <option value="TPI">TI</option>
-                <option value="TPF">TF</option>
-                <option value="FP">FP</option>
-                <option value="FE">FE</option>
-              </select>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="code">Code budgetaire</legend>
-              <input type="text" name="code" class="code" id="code" />
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="passation">Mode de passation</legend>
-              <select class="passation" id="passation">
-                <!-- <option value="">Choisir</option>
-                <option value="AOON">AOON</option>
-                <option value="AORN">AORN</option>
-                <option value="AOPQ">AOPQ</option>
-                <option value="GRGR">GRGR</option>
-                <option value="AODE">AODE</option>
-                <option value="AOOI">AOOI</option>
-                <option value="AORI">AORI</option>
-                <option value="DPAN">DPAN</option>
-                <option value="DPAI">DPAI</option>
-                <option value="DPNA">DPNA</option>
-                <option value="DEPX">DEPX</option>
-                <option value="DECO">DECO</option>
-                <option value="PRAL">PRAL</option>
-                <option value="ANPQ">ANPQ</option>
-                <option value="AIPQ">AIPQ</option> -->
-              </select>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="launch">Periode de lancement</legend>
-              <select name="launch" class="launch" id="launch"></select>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="sign">Periode probable de signature</legend>
-              <select disabled name="sign" class="sign" id="sign"></select>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="control">Controle a priori de la CNMP</legend>
-              <select name="control" class="control" id="control">
-                <option value="Oui">Oui</option>
-                <option value="Non">Non</option>
-              </select>
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="localisation">Localisation</legend>
-              <input
-                type="text"
-                name="localisation"
-                class="localisation"
-                id="localisation"
-              />
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="delay">Delai previsionnel d'execution (mois)</legend>
-              <input
-                type="number"
-                name="delay"
-                class="delay"
-                id="delay"
-                min="1"
-              />
-            </fieldset>
-            <fieldset class="form-control">
-              <legend for="program">Programmation des depenses</legend>
-            </fieldset>
-          </div>
-          <div class="btns">
-            <button id="prev" class="prev">Previous</button>
-            <button id="next" class="next">Next</button>
-          </div>
-          <button id="validate" class="validate">Validate</button>
-        </form>
-      </dialog>
-      <div>
-        <div class="form-control">
-          <label for="institution">Nom de l'institution</label>
-          <input type="text" name="institution" id="institution" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="index.js" type="module" defer></script>
+  <title>CNMP - PAPMP</title>
+</head>
+
+<body>
+  <header>
+  <h1>Canva numérique de la CNMP</h1>
+  </header>
+  <main>
+    <dialog id="contract_dialog">
+      <form method="dialog" id="screen1" class="screen1">
+        <div class="form-group">
+          <label for="description">Objet du projet de marché</label>
+          <input type="description" id="description">
         </div>
-        <div class="form-control">
-          <label for="sigle">Sigle</label>
-          <input type="text" name="sigle" id="sigle" />
+        <div class="form-group">
+          <label for="amount">Montant des crédits disponible</label>
+          <input type="number" id="amount" required>
         </div>
-        <div class="form-control">
-          <label for="identity">Identite de l'autorite contractante</label>
-          <select type="text" name="identity" id="identity">
-            <option value="level1">Etat, Coll.Departmental</option>
-            <option value="level2">Communes, chefs-lieux de dept</option>
-            <option value="level3">Communes, chefs-lieux d'arrondiss</option>
-            <option value="level4">Autres communes</option>
+        <div class="form-group">
+          <label for="contract_type">Nature du marché</label>
+          <select name="contract_type" id="contract_type">
+            <option value="0">Services</option>
+            <option value="1">Fournitures</option>
+            <option value="2">Travaux</option>
+            <option value="3">Prestations</option>
           </select>
         </div>
-        <small>
-          NB: Le tableau doit etre rempli par ordre de priorite chronologique
-        </small>
+        <div class="form-group">
+          <label for="money_provider">Source de financement</label>
+          <select name="money_provider" id="money_provider">
+            <option value="0">TI</option>
+            <option value="1">TF</option>
+            <option value="2">FP</option>
+            <option value="3">FE</option>
+            <option value="4">FM</option>
+          </select>
+        </div>
+      </form>
+      <form method="dialog" id="screen2" class="screen2" hidden>
+        <div class="form-group">
+          <label for="contract_localization">Localisation</label>
+          <input name="contract_localization" id="contract_localization"/>
+        </div>
+        <div class="form-group">
+          <label for="contract_launch">Période de lancement</label>
+          <select name="contract_launch" id="contract_launch">
+            <option>Oct</option>
+            <option>Nov</option>
+            <option>Dec</option>
+            <option>Jan</option>
+            <option>Fev</option>
+            <option>Mar</option>
+            <option>Avr</option>
+            <option>Mai</option>
+            <option>Jui</option>
+            <option>Jul</option>
+            <option>Aout</option>
+            <option>Sept</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <label for="contract_sign">Periode probable de signature</label>
+          <select name="contract_sign" class="contract_sign" id="contract_sign"></select>
+        </div>
+        <div class="form-control">
+          <label for="contract_control">Contrôle a priori de la CNMP</label>
+          <input type="text" id="contract_control" name="contract_control" readonly>
+        </div>
+        <div class="form-control">
+          <label for="contract_delay">Delai previsionnel d'execution (mois)</label>
+          <input type="number" name="contract_delay" class="contract_delay" id="contract_delay" min="1" />
+        </div>
+        <fieldset class="form-control">
+          <legend for="program">Programmation des depenses</legend>
+        </fieldset>
+      </form>
+      <div class="btns">
+        <button id="prev" class="prev">Previous</button>
+        <button id="next" class="next">Next</button>
       </div>
-      <button id="add">Ajouter un marche</button>
-    </main>
-    <template id="template">
-      <tr class="marche">
-        <td>
-          <input class="no" type="text" name="no" disabled required />
-        </td>
-        <td>
-          <textarea type="text" name="objet" class="objet" required></textarea>
-        </td>
-        <td>
-          <select class="finance" required>
-            <option value="">Choisir</option>
-            <option value="TPI">TPI</option>
-            <option value="TPF">TPF</option>
-            <option value="FP">FP</option>
-            <option value="FE">FE</option>
-          </select>
-        </td>
-        <td>
-          <input type="text" name="code" class="code" />
-        </td>
-        <td>
-          <input type="number" name="budget" class="budget" min="1" />
-        </td>
-        <td>
-          <select class="nature" required>
-            <option value="">Choisir</option>
-            <option value="S">S</option>
-            <option value="F">F</option>
-            <option value="T">T</option>
-            <option value="PI">PI</option>
-          </select>
-        </td>
-        <td>
-          <select class="passation">
-            <option value="">Choisir</option>
-            <option value="AOON">AOON</option>
-            <option value="AORN">AORN</option>
-            <option value="AOPQ">AOPQ</option>
-            <option value="GRGR">GRGR</option>
-            <option value="AODE">AODE</option>
-            <option value="AOOI">AOOI</option>
-            <option value="AORI">AORI</option>
-            <option value="DPAN">DPAN</option>
-            <option value="DPAI">DPAI</option>
-            <option value="DPNA">DPNA</option>
-            <option value="DEPX">DEPX</option>
-            <option value="DECO">DECO</option>
-            <option value="PRAL">PRAL</option>
-            <option value="ANPQ">ANPQ</option>
-            <option value="AIPQ">AIPQ</option>
-          </select>
-        </td>
-        <td><input type="month" name="launch" class="launch" /></td>
-        <td><input type="month" name="sign" class="sign" /></td>
-        <td>
-          <select name="control" class="control">
-            <option value="">Choisir</option>
-            <option value="Oui">Oui</option>
-            <option value="Non">Non</option>
-          </select>
-        </td>
-        <td>
-          <input type="text" name="localisation" class="localisation" />
-        </td>
-        <td>
-          <input type="number" name="delay" class="delay" min="1" />
-        </td>
-      </tr>
-    </template>
-  </body>
+      <button id="add_contract">Ajouter</button>
+    </dialog>
+    <form id="ac_form">
+      <div class="form-control">
+        <label for="name">Nom de l'institution</label>
+        <input type="text" name="name" id="name" />
+      </div>
+      <div class="form-control">
+        <label for="sigle">Sigle</label>
+        <input type="text" name="sigle" id="sigle" />
+      </div>
+      <div class="form-control">
+        <label for="identity">Identite de l'autorite contractante</label>
+        <select type="text" name="identity" id="identity">
+          <option value="level1">Etat, Coll.Departmental</option>
+          <option value="level2">Communes, chefs-lieux de dept</option>
+          <option value="level3">Communes, chefs-lieux d'arrondiss</option>
+          <option value="level4">Autres communes</option>
+        </select>
+      </div>
+      <small>NB: Le tableau doit etre rempli par ordre de priorite chronologique</small>
+      <button id="addAcBtn">Ajouter</button>
+    </form>
+    <button id="show_contract_dialog" hidden>Ajouter un nouveau marché</button>
+    <section id="contracts"></section>
+  </main>
+  <template id="template">
+    <tr class="marche">
+      <td>
+        <input class="no" type="text" name="no" disabled required />
+      </td>
+      <td>
+        <textarea type="text" name="objet" class="objet" required></textarea>
+      </td>
+      <td>
+        <select class="finance" required>
+          <option value="">Choisir</option>
+          <option value="TPI">TPI</option>
+          <option value="TPF">TPF</option>
+          <option value="FP">FP</option>
+          <option value="FE">FE</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" name="code" class="code" />
+      </td>
+      <td>
+        <input type="number" name="budget" class="budget" min="1" />
+      </td>
+      <td>
+        <select class="nature" required>
+          <option value="">Choisir</option>
+          <option value="S">S</option>
+          <option value="F">F</option>
+          <option value="T">T</option>
+          <option value="PI">PI</option>
+        </select>
+      </td>
+      <td>
+        <select class="passation">
+          <option value="">Choisir</option>
+          <option value="AOON">AOON</option>
+          <option value="AORN">AORN</option>
+          <option value="AOPQ">AOPQ</option>
+          <option value="GRGR">GRGR</option>
+          <option value="AODE">AODE</option>
+          <option value="AOOI">AOOI</option>
+          <option value="AORI">AORI</option>
+          <option value="DPAN">DPAN</option>
+          <option value="DPAI">DPAI</option>
+          <option value="DPNA">DPNA</option>
+          <option value="DEPX">DEPX</option>
+          <option value="DECO">DECO</option>
+          <option value="PRAL">PRAL</option>
+          <option value="ANPQ">ANPQ</option>
+          <option value="AIPQ">AIPQ</option>
+        </select>
+      </td>
+      <td><input type="month" name="launch" class="launch" /></td>
+      <td><input type="month" name="sign" class="sign" /></td>
+      <td>
+        <select name="control" class="control">
+          <option value="">Choisir</option>
+          <option value="Oui">Oui</option>
+          <option value="Non">Non</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" name="localisation" class="localisation" />
+      </td>
+      <td>
+        <input type="number" name="delay" class="delay" min="1" max="12" />
+      </td>
+    </tr>
+  </template>
+</body>
+
 </html>
