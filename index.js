@@ -9,31 +9,27 @@ import { AC } from "./cdc/pkg/cdc.js";
 let mp = undefined
 /** @type AC */
 let ac = undefined
-/** @type HTMLFormElement */
-const ac_form = document.getElementById("ac_form")
 /** @type HTMLButtonElement */
 const show_contract_dialog = document.getElementById("show_contract_dialog")
 /** @type HTMLDialogElement */
 const contract_dialog = document.getElementById("contract_dialog")
 /** @type HTMLButtonElement */
-const add_contract_btn = contract_dialog.querySelector("#add_contract")
+const add_contract_btn = document.getElementById("add_contract")
 show_contract_dialog.hidden = true
-/** @type HTMLDivElement */
-const first_screen = contract_dialog.querySelector("#screen1");
-/** @type HTMLDivElement */
-const second_screen = contract_dialog.querySelector("#screen2");
+/** @type HTMLFormElement */
+const first_screen = document.getElementById("screen1");
+/** @type HTMLFormElement */
+const second_screen = document.getElementById("screen2");
 /** @type HTMLButtonElement */
-const prev_screen_btn = contract_dialog.querySelector("#prev");
+const prev_screen_btn = document.getElementById("prev");
 prev_screen_btn.setAttribute("disabled", true);
 /** @type HTMLButtonElement */
-const next_screen_btn = contract_dialog.querySelector("#next");
+const next_screen_btn = document.getElementById("next");
 const fmt = Intl.NumberFormat("fr-FR", {
     style: "currency",
     currency: "HTG"
 })
 
-/** @type Contract */
-// let contract = undefined
 /** @type Procedure */
 let proc = undefined
 
@@ -120,9 +116,7 @@ function handlePrevScreenBtnClick(event) {
 function handleNextScreenBtnClick(event) {
     event.preventDefault()
 
-    const formElt = contract_dialog.querySelector("form")
-
-    if (!formElt.checkValidity()) {
+    if (!first_screen.checkValidity()) {
         console.error("Form isn't valid")
         return
     }
@@ -136,19 +130,17 @@ function handleNextScreenBtnClick(event) {
         return
     }
 
-    // contract = new Contract(description.value, amount.value, money_provider.selectedIndex)
-
     first_screen.hidden = true
     second_screen.hidden = false
 
-    set_second_screen_state() 
+    set_second_screen_state()
 
     next_screen_btn.setAttribute("disabled", true)
     prev_screen_btn.removeAttribute("disabled")
     add_contract_btn.removeAttribute("hidden")
 }
 
-function set_second_screen_state () {
+function set_second_screen_state() {
     /** @type HTMLSelectElement */
     const launch_time = document.getElementById("contract_launch")
     /** @type HTMLSelectElement */
@@ -158,11 +150,11 @@ function set_second_screen_state () {
 
     launch_time.addEventListener("change", () => {
         sign_time.innerHTML = ""
-        const values = Object.keys(Month).slice(launch_time.selectedIndex,launch_time.selectedIndex+proc.launch_sign_time_diff())
+        const values = Object.keys(Month).slice(launch_time.selectedIndex, launch_time.selectedIndex + proc.launch_sign_time_diff())
         values.forEach(value => {
             const opt = document.createElement("option")
             opt.value = value,
-            opt.textContent = Month[value]
+                opt.textContent = Month[value]
             sign_time.appendChild(opt)
         })
     })
@@ -177,7 +169,7 @@ function set_second_screen_state () {
  */
 function handleAddAcBtnClick(event) {
     event.preventDefault()
-    
+
     /** @type {HTMLFormElement} */
     const ac_form = document.getElementById("ac_form")
 
@@ -233,14 +225,18 @@ function add_ac_banner(name, sigle, identity) {
 function handleAddContractBtnClick(event) {
     event.preventDefault()
 
+    if (!second_screen.checkValidity()) {
+        console.error("Form isn't valid")
+    }
+
     /** @type HTMLInputElement */
-    const description = contract_dialog.querySelector("input#description")
+    const description = document.getElementById("description")
     /** @type HTMLInputElement */
-    const amount = contract_dialog.querySelector("input#amount")
+    const amount = document.getElementById("amount")
     /** @type HTMLSelectElement */
-    const money_provider = contract_dialog.querySelector("select#money_provider")
+    const money_provider = document.getElementById("money_provider")
     /** @type HTMLSelectElement */
-    const contract_type = contract_dialog.querySelector("select#contract_type")
+    const contract_type = document.getElementById("contract_type")
 
     /** @type HTMLInputElement */
     const localization = document.getElementById("contract_localization")
@@ -253,9 +249,9 @@ function handleAddContractBtnClick(event) {
     /** @type HTMLSelectElement */
     const sign_time = document.getElementById("contract_sign")
 
-    const contract = new Contract(description.value,amount.value,money_provider.selectedIndex,launch_time.selectedIndex,sign_time.selectedIndex,control.value,delay.value,localization.value) 
+    const contract = new Contract(description.value, amount.value, money_provider.selectedIndex, launch_time.selectedIndex, sign_time.selectedIndex, control.value, delay.value, localization.value)
 
-    if ( !ac.add_contract(mp,contract,contract_type.selectedIndex) ) {
+    if (!ac.add_contract(mp, contract, contract_type.selectedIndex)) {
         alert("Could not add contract")
         console.log(contract.render())
         return
