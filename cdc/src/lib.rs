@@ -1,9 +1,10 @@
-use std::fmt::{self};
+use std::fmt;
 
 use wasm_bindgen::prelude::wasm_bindgen;
 
+#[wasm_bindgen]
 #[derive(Debug,Clone)]
-enum Month {
+pub enum Month {
     Oct,
     Nov,
     Dec,
@@ -121,12 +122,11 @@ impl AC {
     }
 
     pub fn add_contract(&mut self,seuil: &Seuil, contract: Contract, contract_type: ContractType) -> bool {
-        if let Some(procedure) = seuil.find_procedure(&self, contract.amount, &contract_type) {
-            let pk = procedure.clone();
+        if let Some(procedure) = seuil.find_procedure(&self, contract.amount, contract_type) {
             let info = procedure.find_info(contract.amount,contract_type);
             self.papmp.add_contract(Contract{
                 contract_info: info.clone(),
-                procedure: pk,
+                procedure,
                 ..contract
             });
          return true
@@ -162,26 +162,27 @@ impl Seuil {
         }
     }
 
-    fn find_procedure(
+    pub fn find_procedure(
         &self,
         ac: &AC,
         amount: f64,
-        contract_type: &ContractType,
-    ) -> Option<&Procedure> {
+        contract_type: ContractType,
+    ) -> Option<Procedure> {
         let mut proc_iter = match ac.identity {
             Identity::State =>  self.level1.iter(),
             Identity::Dept =>  self.level2.iter(),
             Identity::Arron =>  self.level3.iter(), 
             Identity::Ohter =>  self.level4.iter(),
         };
-        proc_iter.find(|&procedures| procedures.find_procedure(amount, contract_type.clone()))
+        let proc = proc_iter.find(| &procedure|procedure.has_contract_informations(amount,contract_type));
+        proc.cloned()
     }
 }
 
 #[wasm_bindgen]
 #[derive(Debug,Clone,Default)]
 pub struct Procedure {
-    kind: Vec<ProcedureKind> ,//EnumProcedureKind,
+    kind: Vec<ProcedureKind> ,
     contract_info: Vec<ContractInfo>,
     control: bool,
     launch_sign_diff: u8,
@@ -204,11 +205,24 @@ impl Procedure {
         }
     }
 
-    pub fn find_procedure(&self, amount: f64, contract_type: ContractType) -> bool {
+    pub fn launch_sign_time_diff(&self) -> u8 {
+        self.launch_sign_diff
+    }
+
+
+    pub fn kind(&self) -> Vec<ProcedureKind> {
+        self.kind.clone() 
+    }
+
+    pub fn has_contract_informations(&self, amount: f64, contract_type: ContractType) -> bool {
         let mut iterator = self.contract_info.iter();
         iterator
-            .find(|&c_info| { c_info.bound(amount) && c_info.contract_type.contains(&contract_type) })
+            .find(|&c_info| c_info.bound(amount) && c_info.contract_type.contains(&contract_type))
             .is_some()
+    }
+
+    pub fn control(&self) -> bool {
+        self.control
     }
 
     pub fn find_info(&self, amount: f64, contract_type: ContractType) -> ContractInfo {
@@ -260,7 +274,7 @@ impl ContractInfo {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, PartialEq,Clone,Copy,Default)]
+#[derive(Debug, PartialEq,Default,Clone,Copy)]
 pub enum ContractType {
     #[default]
     Services,
@@ -280,7 +294,7 @@ impl fmt::Display for ContractType {
     }
 }
 
-#[wasm_bindgen(constructor)]
+#[wasm_bindgen]
 #[derive(Debug,Clone)]
 pub enum ProcedureKind {
     Demandes,
@@ -317,6 +331,7 @@ pub struct Contract {
     money_provider: MoneyProvider,
     contract_info: ContractInfo,
     launch: Month,
+    sign: Month,
     localization: String,
     delay: u8,
     control: bool,
@@ -332,7 +347,7 @@ impl fmt::Display for Contract {
         let c_type = format!("  - Nature du marché: {:?}\n", self.contract_info.contract_type);
         let mode = format!("  - Mode de passation: {:?}\n", self.contract_info.mode);
         let launch = format!("  - Période de lancement: {}\n", self.launch);
-        let sign = format!("  - Période probale de signature du marché: {}\n", self.launch);
+        let sign = format!("  - Période probale de signature du marché: {}\n", self.sign);
         let control = format!("  - Controle a priori de la CNMP: {}\n", self.control);
         let localization = format!("  - Localisation: {}\n", self.localization);
         let delay = format!("  - Délai Prévision-nel D'exécution: {}\n", self.delay);
@@ -348,18 +363,24 @@ impl Contract {
         description: String,
         amount: f64,
         money_provider: MoneyProvider,
+        launch: Month,
+        sign: Month,
+        control: bool,
+        delay: u8,
+        localization: String,
     ) -> Self {
         Self {
             no: String::new(),
             description,
             amount,
             money_provider,
-            launch: Month::Oct,
-            control: false,
+            launch,
+            sign,
+            control,
             contract_info: ContractInfo::default(),
-            procedure: Procedure::default(),// EnumProcedureKind::Single(ProcedureKind::Generales),
-            delay: 2,
-            localization: "Port-au-Prince".to_string(),
+            procedure: Procedure::default(),
+            delay,
+            localization,
         }
     }
 
@@ -371,12 +392,8 @@ impl Contract {
         self.localization.clone()
     }
 
-    pub fn control(&self) -> bool {
-        self.procedure.control
-    }
-
     pub fn sign(&self) -> String {
-        self.launch.to_string()
+        self.sign.to_string()
     }
 
     pub fn launch(&self) -> String {
@@ -385,6 +402,10 @@ impl Contract {
 
     pub fn no(&self) -> String {
         self.no.clone()
+    }
+
+    pub fn procedure(&self) -> Procedure {
+        self.procedure.clone()
     }
 
     pub fn description(&self) -> String {

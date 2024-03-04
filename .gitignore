@@ -1,2 +1,3 @@
-rust/cdc/target/*
-/rust/cdc/Cargo.lock
+./cdc/target/*
+./cdc/Cargo.lock
+/cdc/target/
