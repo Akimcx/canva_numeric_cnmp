@@ -1,0 +1,3 @@
+./cdc/target/*
+./cdc/Cargo.lock
+/cdc/target/
