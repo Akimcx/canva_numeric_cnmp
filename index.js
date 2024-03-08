@@ -124,8 +124,7 @@ function handleNextScreenBtnClick(event) {
     /** @type HTMLSelectElement */
     const contract_type = contract_dialog.querySelector("select#contract_type")
 
-    proc = mp.find_procedure(ac, amount.value, contract_type.selectedIndex);
-    if (proc === undefined) {
+    if (mp.find_procedure(ac, amount.value, contract_type.selectedIndex) === undefined) {
         alert("Contract informations is not valid")
         return
     }
