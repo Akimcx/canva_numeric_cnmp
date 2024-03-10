@@ -1,16 +1,17 @@
 tr {
   border-bottom: 1px solid #ddd;
 }
+
 tr:hover {
   background-color: #d6eeee;
 }
 
-input:invalid {
-  border-color: red;
+input:focus {
+  outline: none;
 }
 
-input:invalid:focus {
-  outline-color: red;
+input:invalid {
+  outline: 2px solid red;
 }
 
 fieldset {
