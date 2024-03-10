@@ -12,22 +12,22 @@
 
 <body>
   <header>
-  <h1>Canva numérique de la CNMP</h1>
+    <h1>Canva numérique de la CNMP</h1>
   </header>
   <main>
     <dialog id="contract_dialog">
       <form method="dialog" id="screen1" class="screen1">
         <div class="form-group">
           <label for="description">Objet du projet de marché</label>
-          <input type="description" id="description">
+          <input type="description" id="description" required>
         </div>
         <div class="form-group">
           <label for="amount">Montant des crédits disponible</label>
-          <input type="number" id="amount" required>
+          <input type="number" id="amount" min="3500000" required>
         </div>
         <div class="form-group">
           <label for="contract_type">Nature du marché</label>
-          <select name="contract_type" id="contract_type">
+          <select name="contract_type" id="contract_type" required>
             <option value="0">Services</option>
             <option value="1">Fournitures</option>
             <option value="2">Travaux</option>
@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
           <label for="money_provider">Source de financement</label>
-          <select name="money_provider" id="money_provider">
+          <select name="money_provider" id="money_provider" required>
             <option value="0">TI</option>
             <option value="1">TF</option>
             <option value="2">FP</option>
@@ -44,15 +44,16 @@
             <option value="4">FM</option>
           </select>
         </div>
+        <button id="next">Next</button>
       </form>
       <form method="dialog" id="screen2" class="screen2" hidden>
         <div class="form-group">
           <label for="contract_localization">Localisation</label>
-          <input name="contract_localization" id="contract_localization"/>
+          <input name="contract_localization" id="contract_localization" required />
         </div>
         <div class="form-group">
           <label for="contract_launch">Période de lancement</label>
-          <select name="contract_launch" id="contract_launch">
+          <select name="contract_launch" id="contract_launch" required>
             <option>Oct</option>
             <option>Nov</option>
             <option>Dec</option>
@@ -69,7 +70,7 @@
         </div>
         <div class="form-control">
           <label for="contract_sign">Periode probable de signature</label>
-          <select name="contract_sign" class="contract_sign" id="contract_sign"></select>
+          <select name="contract_sign" class="contract_sign" id="contract_sign" required></select>
         </div>
         <div class="form-control">
           <label for="contract_control">Contrôle a priori de la CNMP</label>
@@ -77,37 +78,36 @@
         </div>
         <div class="form-control">
           <label for="contract_delay">Delai previsionnel d'execution (mois)</label>
-          <input type="number" name="contract_delay" class="contract_delay" id="contract_delay" min="1" />
+          <input type="number" max="12" name="contract_delay" class="contract_delay" id="contract_delay" min="1"
+            required />
         </div>
         <fieldset class="form-control">
           <legend for="program">Programmation des depenses</legend>
         </fieldset>
+        <button id="prev" type="button" class="prev">Previous</button>
+        <button id="add_contract">Ajouter</button>
       </form>
-      <div class="btns">
-        <button id="prev" class="prev">Previous</button>
-        <button id="next" class="next">Next</button>
-      </div>
-      <button id="add_contract">Ajouter</button>
     </dialog>
     <form id="ac_form">
       <div class="form-control">
         <label for="name">Nom de l'institution</label>
-        <input type="text" name="name" id="name" />
+        <input type="text" class="name" name="name" id="name" required />
       </div>
       <div class="form-control">
         <label for="sigle">Sigle</label>
-        <input type="text" name="sigle" id="sigle" />
+        <input type="text" name="sigle" class="sigle" id="sigle" required />
       </div>
       <div class="form-control">
         <label for="identity">Identite de l'autorite contractante</label>
-        <select type="text" name="identity" id="identity">
-          <option value="level1">Etat, Coll.Departmental</option>
-          <option value="level2">Communes, chefs-lieux de dept</option>
-          <option value="level3">Communes, chefs-lieux d'arrondiss</option>
-          <option value="level4">Autres communes</option>
+        <select type="text" name="identity" class="identity" id="identity" required>
+          <option value="0">Etat, Coll.Departmental</option>
+          <option value="1">Communes, chefs-lieux de dept</option>
+          <option value="2">Communes, chefs-lieux d'arrondiss</option>
+          <option value="3">Autres communes</option>
         </select>
       </div>
       <small>NB: Le tableau doit etre rempli par ordre de priorite chronologique</small>
+      <br>
       <button id="addAcBtn">Ajouter</button>
     </form>
     <button id="show_contract_dialog" hidden>Ajouter un nouveau marché</button>
