@@ -111,8 +111,15 @@ init().then(() => {
 
   mp = new Seuil(l1_arr, l2_arr, l3_arr, l4_arr);
 
+  const ls = localStorage.getItem("ac");
+  if (ls) {
+    ac = AC.f(ls);
+    ac_form.hidden = true;
+    show_contract_dialog.hidden = false;
+    // refresh_dom_contracts(ac.contracts())
+  }
+
   show_contract_dialog.addEventListener("click", () => contract_dialog.showModal());
-  show_contract_dialog.blur();
 
   prev_screen_btn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -134,7 +141,6 @@ init().then(() => {
  * @returns void
  */
 function handleNextScreenBtnClick(first_screen, second_screen, prev_screen_btn, add_contract_btn) {
-
   const contract_type = document.getElementById("contract_type");
   if (!contract_type || !(contract_type instanceof HTMLSelectElement)) throw new Error();
 
@@ -208,11 +214,12 @@ function handleAddAcBtnClick(show_contract_dialog, ac_form) {
   }
 
   ac = new AC(name.value, sigle.value, identity);
-  console.log(ac.render());
+  localStorage.setItem("ac", ac.to_json());
   // ac_form.reset()
   ac_form.hidden = true;
   // add_ac_banner(name.value, sigle.value, identity);
   show_contract_dialog.hidden = false;
+  show_contract_dialog.focus();
 }
 
 //TODO: Add a banner showing the current AC
@@ -283,7 +290,7 @@ function handleAddContractBtnClick(second_screen, contract_dialog) {
     return;
   }
   // refresh_dom_contracts(ac.contracts())
-  ac.contracts().forEach(c => console.log(c.render()));
+  localStorage.setItem("ac", ac.to_json());
   contract_dialog.close();
 }
 

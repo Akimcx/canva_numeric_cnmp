@@ -1,9 +1,10 @@
 use std::fmt;
 
+use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub enum Month {
     Oct,
     Nov,
@@ -39,7 +40,7 @@ impl fmt::Display for Month {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Deserialize, Serialize)]
 pub enum Mode {
     DEPX,
     DECT,
@@ -76,7 +77,7 @@ impl fmt::Display for Mode {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
 #[wasm_bindgen]
 pub enum Identity {
     State,
@@ -86,7 +87,7 @@ pub enum Identity {
 }
 
 #[wasm_bindgen]
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct AC {
     name: String,
     sigle: String,
@@ -105,6 +106,13 @@ impl fmt::Display for AC {
     }
 }
 
+impl From<String> for AC {
+    fn from(value: String) -> Self {
+        let ac: AC = serde_json::from_str(value.as_str()).unwrap();
+        ac
+    }
+}
+
 #[wasm_bindgen]
 impl AC {
     #[wasm_bindgen(constructor)]
@@ -115,6 +123,14 @@ impl AC {
             identity,
             papmp: PAPMP::new(),
         }
+    }
+
+    pub fn f(s: String) -> Self {
+        AC::from(s)
+    }
+
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(self).unwrap()
     }
 
     pub fn render(&self) -> String {
@@ -189,7 +205,7 @@ impl Seuil {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Procedure {
     kind: Vec<ProcedureKind>,
     contract_info: Vec<ContractInfo>,
@@ -246,7 +262,7 @@ impl Procedure {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ContractInfo {
     min: f64,
     max: f64,
@@ -289,7 +305,7 @@ impl ContractInfo {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, PartialEq, Default, Clone, Copy)]
+#[derive(Debug, Deserialize, Serialize, PartialEq, Default, Clone, Copy)]
 pub enum ContractType {
     #[default]
     Services,
@@ -310,7 +326,7 @@ impl fmt::Display for ContractType {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum ProcedureKind {
     Demandes,
     Alleges,
@@ -319,7 +335,7 @@ pub enum ProcedureKind {
     Specifiques,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
 struct PAPMP {
     contracts: Vec<Contract>,
 }
@@ -338,7 +354,7 @@ impl PAPMP {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Contract {
     no: String,
     description: String,
@@ -455,7 +471,7 @@ impl Contract {
 }
 
 #[wasm_bindgen]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub enum MoneyProvider {
     TI,
     TF,
